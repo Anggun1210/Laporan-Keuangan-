@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Expense & Budget Visualizer</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <rect width="28" height="28" rx="8" fill="#3b82f6"/>
+          <path d="M7 14h14M14 7v14" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        </svg>
+        <span>BudgetViz</span>
+      </div>
+      <button class="dark-toggle" id="darkToggle" title="Toggle dark mode">
+        <span class="icon-sun">☀️</span>
+        <span class="icon-moon">🌙</span>
+      </button>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- BALANCE CARD -->
+    <section class="balance-section">
+      <div class="balance-card">
+        <p class="balance-label">Total Pengeluaran</p>
+        <h2 class="balance-amount" id="totalAmount">Rp 0</h2>
+        <p class="balance-sub" id="totalCount">0 transaksi tercatat</p>
+      </div>
+      <div class="summary-cards">
+        <div class="summary-card" id="summaryMakanan">
+          <span class="summary-dot" style="background:#60a5fa"></span>
+          <div>
+            <p class="summary-cat">Makanan</p>
+            <p class="summary-val" id="valMakanan">Rp 0</p>
+          </div>
+        </div>
+        <div class="summary-card" id="summaryTransportasi">
+          <span class="summary-dot" style="background:#34d399"></span>
+          <div>
+            <p class="summary-cat">Transportasi</p>
+            <p class="summary-val" id="valTransportasi">Rp 0</p>
+          </div>
+        </div>
+        <div class="summary-card" id="summaryHiburan">
+          <span class="summary-dot" style="background:#f472b6"></span>
+          <div>
+            <p class="summary-cat">Hiburan</p>
+            <p class="summary-val" id="valHiburan">Rp 0</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="main-grid">
+
+      <!-- LEFT: FORM + LIST -->
+      <div class="left-col">
+
+        <!-- FORM -->
+        <section class="card form-card">
+          <h3 class="card-title">Tambah Transaksi</h3>
+          <form id="expenseForm" novalidate>
+            <div class="form-group">
+              <label for="itemName">Nama Barang / Keterangan</label>
+              <input type="text" id="itemName" placeholder="Contoh: Makan siang" autocomplete="off" />
+              <span class="error-msg" id="errName"></span>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="itemAmount">Jumlah (Rp)</label>
+                <input type="number" id="itemAmount" placeholder="0" min="1" />
+                <span class="error-msg" id="errAmount"></span>
+              </div>
+              <div class="form-group">
+                <label for="itemCategory">Kategori</label>
+                <select id="itemCategory">
+                  <option value="Makanan">🍔 Makanan</option>
+                  <option value="Transportasi">🚗 Transportasi</option>
+                  <option value="Hiburan">🎮 Hiburan</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn-primary">+ Tambah Transaksi</button>
+          </form>
+        </section>
+
+        <!-- TRANSACTION LIST -->
+        <section class="card list-card">
+          <div class="list-header">
+            <h3 class="card-title">Daftar Transaksi</h3>
+            <div class="list-controls">
+              <select id="sortSelect" title="Urutkan">
+                <option value="newest">Terbaru</option>
+                <option value="oldest">Terlama</option>
+                <option value="highest">Tertinggi</option>
+                <option value="lowest">Terendah</option>
+              </select>
+              <button class="btn-clear" id="clearAll" title="Hapus semua">🗑 Hapus Semua</button>
+            </div>
+          </div>
+
+          <div id="emptyState" class="empty-state">
+            <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="30" stroke="#e5e7eb" stroke-width="2"/>
+              <path d="M20 32h24M32 20v24" stroke="#d1d5db" stroke-width="2.5" stroke-linecap="round"/>
+            </svg>
+            <p>Belum ada transaksi.<br/>Tambahkan pengeluaran pertamamu!</p>
+          </div>
+
+          <ul class="transaction-list" id="transactionList"></ul>
+        </section>
+
+      </div>
+
+      <!-- RIGHT: CHART -->
+      <div class="right-col">
+        <section class="card chart-card">
+          <h3 class="card-title">Visualisasi Pengeluaran</h3>
+          <div class="chart-wrap">
+            <canvas id="pieChart"></canvas>
+          </div>
+          <div id="chartEmpty" class="chart-empty">
+            <p>Tambahkan transaksi untuk melihat grafik</p>
+          </div>
+          <div class="chart-legend" id="chartLegend"></div>
+        </section>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- TOAST NOTIFICATION -->
+  <div class="toast" id="toast"></div>
+
+  <script src="js/script.js"></script>
+</body>
+</html>
